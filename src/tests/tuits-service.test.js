@@ -2,7 +2,7 @@ import {
     findAllTuits,
     findTuitById,
     createTuit,
-    deleteTuitById
+    deleteTuitById, findTuitByUser
 } from "../services/tuits-service";
 
 jest.useRealTimers();
@@ -106,57 +106,40 @@ describe('findTuitById', () => {
 
 describe('findAllTuits', () => {
     //sample tuits we will insert into then retrieve
-    const tuits = [
-        {
-            "id": '0',
-            "tuit": "test tuit 0"
-        },
-        {
-            "id": '1',
-            "tuit": "test tuit 1"
-        },
-        {
-            "id": '2',
-            "tuit": "test tuit 2"
-        }
-    ]
+    const tuitsId = [
+        '1', '2', '3'
+    ];
 
     const BobId = '6205d2b57556e383c20128d4';
     //setup data before test
     beforeAll(() => {
-        tuits.map(tuit =>
-                  createTuit({
-                     uid: BobId,
-                     tuit: tuit
-         })
-        )
+        Promise.all(tuitsId.map(id =>
+            createTuit(BobId,{
+                id: id,
+                tuit: `test tuit ${id}`
+            })
+        ))
     });
 
     //clean up after test
     afterAll(() =>
-        // delete tuits we inserted
-        tuits.map(tuit =>
-            deleteTuitById(tuit.id)
-        )
+        Promise.all(tuitsId.map(id =>
+            deleteTuitById(id)
+        ))
     );
 
     test('can retrieve all tuits with REST API', async () => {
         // retrieve all tuits
-        const testTuits = await findAllTuits();
-
-        // there should be a minimum number of tuits
-        expect(testTuits.length).toBeGreaterThanOrEqual(tuits.length);
-
-        // check each tuit we inserted
-        const tuitInserted = testTuits.filter(
-            tuit => tuits.indexOf(tuit.id) >= 0
-        );
+        const testTuits = await findTuitByUser(BobId);
+        // console.log(testTuits)
+        // // there should be a minimum number of tuits
+        // expect(testTuits.length).toBeGreaterThanOrEqual(tuitsId.length);
 
         //compare the actual tuit in  databse with ones we sent
-        tuitInserted.forEach((test, i) => {
-            const curTuit = tuits.find(i => test.id === i);
-            expect(curTuit.id).toEqual(i);
-            expect(curTuit.tuit).toEqual(`test tuit ${i}`);
+        testTuits.forEach(test => {
+            const curId = tuitsId.find(id => id === test.id)
+            expect(test.id).toEqual(curId);
+            expect(test.tuit).toEqual(`test tuit ${curId}`);
             expect(test.postedBy).toEqual(BobId);
         })
     })
