@@ -112,8 +112,8 @@ describe('findAllTuits', () => {
 
     const BobId = '6205d2b57556e383c20128d4';
     //setup data before test
-    beforeAll(() => {
-        Promise.all(tuitsId.map(id =>
+    beforeAll(async () => {
+       await Promise.all(tuitsId.map(id =>
             createTuit(BobId,{
                 id: id,
                 tuit: `test tuit ${id}`
@@ -122,18 +122,23 @@ describe('findAllTuits', () => {
     });
 
     //clean up after test
-    afterAll(() =>
-        Promise.all(tuitsId.map(id =>
-            deleteTuitById(id)
-        ))
+    // async/await is to wait the only promise resolved and then go to the next function i.e. test
+    afterAll(async () =>
+       // promise.all return only one promise
+       await Promise.all(
+           // return [promise1, promise2, promise3]
+           tuitsId.map(id => deleteTuitById(id))
+       ) //
+
     );
+
 
     test('can retrieve all tuits with REST API', async () => {
         // retrieve all tuits
         const testTuits = await findTuitByUser(BobId);
         // console.log(testTuits)
-        // // there should be a minimum number of tuits
-        // expect(testTuits.length).toBeGreaterThanOrEqual(tuitsId.length);
+        // there should be a minimum number of tuits
+        expect(testTuits.length).toBeGreaterThanOrEqual(tuitsId.length);
 
         //compare the actual tuit in  databse with ones we sent
         testTuits.forEach(test => {
