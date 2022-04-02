@@ -11,7 +11,7 @@ const MyLikes = () => {
     
     return(
         <div>
-            <Tuits tuits={likedTuits} refreshTuits={findTuitsILike}/>
+            <Tuits tuits={likedTuits} refreshTuits={findTuitsILike} likeStatus={true} dislikeStatus={false}/>
         </div>
     );
 };

@@ -4,7 +4,7 @@ import Tuit from "./tuit";
 import * as likesService from "../../services/likes-service";
 import * as dislikeService from "../../services/dislike-service";
 import * as service from "../../services/tuits-service";
-const Tuits = ({tuits = [], refreshTuits}) => {
+const Tuits = ({tuits = [], refreshTuits, likeStatus, dislikeStatus}) => {
     const likeTuit = (tuit) =>
         likesService.userLikesTuit("me", tuit._id)
             .then(refreshTuits)
@@ -27,7 +27,10 @@ const Tuits = ({tuits = [], refreshTuits}) => {
                         deleteTuit={deleteTuit}
                         likeTuit={likeTuit}
                         dislikeTuit={dislikeTuit}
-                        tuit={tuit}/>)
+                        tuit={tuit}
+                        likeStatus={likeStatus}
+                        dislikeStatus={dislikeStatus}
+                  />)
             }
           </ul>
         </div>
