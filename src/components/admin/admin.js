@@ -23,6 +23,7 @@ export const Login = () => {
       .then(users => {
         setExistingUsers(users)
       })
+
   const register = () =>
     service.createUser(newUser)
       .then(findAllUsers);

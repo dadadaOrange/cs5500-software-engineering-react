@@ -62,7 +62,6 @@ describe('www', () => {
   beforeEach(() => {
     axios.get.mockImplementation(() =>
       Promise.resolve({ data: {users: MOCKED_USERS} }));
-
     act(() => {
       render(<Tuiter/>)
     });
@@ -161,7 +160,6 @@ describe('createUser', () => {
   }))
 
   test('user service can insert new users in database', async () => {
-
     act(() => {
       render(
         <HashRouter>
