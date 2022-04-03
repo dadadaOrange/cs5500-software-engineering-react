@@ -8,7 +8,7 @@ import {
 jest.useRealTimers();
 
 describe('createTuit', () => {
-    const BobId = '6205d2b57556e383c20128d4';
+    const userId = '6249c134a830f2760d057eb7';
     // sample tuit to insert
     const sampleTuit = {
         id: '1',
@@ -29,18 +29,18 @@ describe('createTuit', () => {
 
     test('can create tuit with REST API', async () => {
         // insert new tuit for this user
-        const newTuit = await createTuit(BobId, sampleTuit);
+        const newTuit = await createTuit(userId, sampleTuit);
 
         //verify inserted tuit's properties match parameter tuit
         expect(newTuit.id).toEqual(sampleTuit.id);
         expect(newTuit.tuit).toEqual(sampleTuit.tuit);
-        expect(newTuit.postedBy).toEqual(BobId);
+        expect(newTuit.postedBy).toEqual(userId);
     });
 });
 
 describe('deleteTuit', () => {
     // create a sample user
-    const BobId = '6205d2b57556e383c20128d4';
+    const userId = '6249c134a830f2760d057eb7';
     // sample tuit to insert
     const sampleTuit = {
         id: '1',
@@ -50,7 +50,7 @@ describe('deleteTuit', () => {
     // setup the tests before verification
     beforeAll(() => {
         // insert the sample tuit we then try to remove
-        return createTuit(BobId, sampleTuit);
+        return createTuit(userId, sampleTuit);
     })
 
     // clean up after test runs
@@ -69,7 +69,7 @@ describe('deleteTuit', () => {
 });
 
 describe('findTuitById', () => {
-    const BobId = '6205d2b57556e383c20128d4';
+    const userId = '6249c134a830f2760d057eb7';
     const sampleTuit = {
         id: '1',
         tuit: 'This is a test tuit.'
@@ -89,18 +89,18 @@ describe('findTuitById', () => {
 
     test('can retrieve a tuit by their primary key with REST API', async () => {
         //insert a tuit into database
-        const newTuit = await createTuit(BobId, sampleTuit);
+        const newTuit = await createTuit(userId, sampleTuit);
 
         // verify new tuit matches the parameter tuit
         expect(newTuit.tuit).toEqual(sampleTuit.tuit);
-        expect(newTuit.postedBy).toEqual(BobId);
+        expect(newTuit.postedBy).toEqual(userId);
 
         // retrieve the tuit from the database by its primary key
         const existingTuit = await findTuitById(newTuit._id);
 
         // verify retrieved tuit matches parameter tuit
         expect(existingTuit.tuit).toEqual(sampleTuit.tuit);
-        expect(existingTuit.postedBy._id).toEqual(BobId);
+        expect(existingTuit.postedBy._id).toEqual(userId);
     });
 });
 
@@ -110,11 +110,11 @@ describe('findAllTuits', () => {
         '1', '2', '3'
     ];
 
-    const BobId = '6205d2b57556e383c20128d4';
+    const userId = '6249c346a830f2760d057f08';
     //setup data before test
     beforeAll(async () => {
        await Promise.all(tuitsId.map(id =>
-            createTuit(BobId,{
+            createTuit(userId,{
                 id: id,
                 tuit: `test tuit ${id}`
             })
@@ -135,8 +135,8 @@ describe('findAllTuits', () => {
 
     test('can retrieve all tuits with REST API', async () => {
         // retrieve all tuits
-        const testTuits = await findTuitByUser(BobId);
-        // console.log(testTuits)
+        const testTuits = await findTuitByUser(userId);
+        console.log(testTuits)
         // there should be a minimum number of tuits
         expect(testTuits.length).toBeGreaterThanOrEqual(tuitsId.length);
 
@@ -145,7 +145,7 @@ describe('findAllTuits', () => {
             const curId = tuitsId.find(id => id === test.id)
             expect(test.id).toEqual(curId);
             expect(test.tuit).toEqual(`test tuit ${curId}`);
-            expect(test.postedBy).toEqual(BobId);
+            expect(test.postedBy).toEqual(userId);
         })
     })
 

@@ -45,8 +45,8 @@ test('tuit list renders static tuit array', async () => {
         <HashRouter>
             <Tuits tuits={sampleTuit}/>
         </HashRouter>);
-    const linkElement = await screen.findAllByText(/tuit/i);
-    expect(linkElement.length).toEqual(3);
+    const linkElement = await screen.findAllByText(/alice's/i);
+    expect(linkElement.length).toEqual(1);
 });
 
 test('tuit list renders async', async () => {
@@ -56,7 +56,7 @@ test('tuit list renders async', async () => {
             <Tuits tuits={tuits}/>
         </HashRouter>
     )
-    const linkElement = screen.getByText(/cici/i);
+    const linkElement = screen.getByText(/alice/i);
     expect(linkElement).toBeInTheDocument();
 })
 
