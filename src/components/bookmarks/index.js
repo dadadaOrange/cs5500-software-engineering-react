@@ -1,6 +1,11 @@
 import React from "react";
 // import Tuits from "../tuits";
 
+/**
+ * Component for showing the bookmarks of the user.
+ * @returns {JSX.Element}
+ * @constructor
+ */
 function Bookmarks () {
   return(
     <div>

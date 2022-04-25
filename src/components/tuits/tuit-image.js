@@ -1,4 +1,11 @@
 import React from "react";
+
+/**
+ * Component for uploading image within a tuit
+ * @param tuit
+ * @returns {JSX.Element}
+ * @constructor
+ */
 const TuitImage = ({tuit}) => {
   return(
     <div className="position-relative">
